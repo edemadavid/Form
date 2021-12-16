@@ -4,10 +4,47 @@
     include("config/db_connect.php");
 
 
-    $firstname=$lastname=$phoneNo=$DoB=$email=$addres="";
+    $firstname=$lastname=$phoneNo=$DoB=$email=$addres=$fileDestination="";
 
-    $errors = array("firstname"=>"", "lastname" =>"", "phoneNo" =>"", "DoB"=>"", "email"=>"", "addres"=>"");
+    $errors = array("firstname"=>"", "lastname" =>"", "phoneNo" =>"", "DoB"=>"", "email"=>"", "addres"=>"","images"=>"");
 
+    
+
+    if(isset($_POST["upload"])){
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $phoneNo = $_POST['phoneNo'];
+        $email = $_POST["email"];
+        $addres = $_POST['addres'];
+        $DoB= $_POST['DoB'];
+
+
+        $file = $_FILES["file"];
+        $fileName = $_FILES["file"]["name"];
+        $fileTmpName = $_FILES["file"]["tmp_name"];
+        $fileSize = $_FILES["file"]["size"];
+        $fileError = $_FILES["file"]["error"];
+        $fileType = $_FILES["file"]["type"];
+        
+
+        $fileExt = explode ('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array ('jpg','jpeg','png');
+
+
+        if (in_array($fileActualExt, $allowed)){
+            if($fileError===0){
+                if ($fileSize < 500000) {
+                    $fileNameNew = uniqid('',true).".".$fileActualExt;
+                    $fileDestination = 'uploads/'.$fileNameNew;
+                    move_uploaded_file($fileTmpName, $fileDestination);
+                }   else {$errors["images"]='your file is too big';}
+            }   else { $errors["images"]='There was an error uploading your file';}
+        }   else{ $errors["images"]= 'File type not allowed!';}
+    
+        
+    }
 
     if(isset($_POST["submit"])){
 
@@ -76,9 +113,10 @@
             $DoB = mysqli_real_escape_string($conn, $_POST['DoB']);
             $email = mysqli_real_escape_string($conn, $_POST['email']);
             $addres = mysqli_real_escape_string($conn, $_POST['addres']);
+            $profilepics = mysqli_real_escape_string($conn, $_POST['location']);
 
             //create sql
-            $sql = "INSERT INTO dataforms(firstname,lastname,phoneNo,DoB,email,address) VALUES('$firstname', '$lastname', '$phoneNo','$DoB','$email', '$addres')";
+            $sql = "INSERT INTO dataforms(firstname,lastname,phoneNo,DoB,email,address,profilepics) VALUES('$firstname', '$lastname', '$phoneNo','$DoB','$email', '$addres', '$profilepics' )";
 
             if(mysqli_query($conn, $sql)){
                 header("location: alldata.php");
@@ -95,6 +133,12 @@
 ?>
 
 
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,7 +147,7 @@
     <section class="container">
         <h4 class="text-center my-3">Bio Data Registration page</h4>
 
-        <form action="formpage.php" method="POST">
+        <form action="formpage.php" method="POST" enctype="multipart/form-data">
 
             <div class="row">
                 <div class="col-md-6 mb-3 form-group">
@@ -154,10 +198,21 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Address</span>
                 </div>
-                <textarea class="form-control" name="addres" value="<?php echo htmlspecialchars($addres) ?>">
-                </textarea>
+                <input class="form-control" name="addres" value="<?php echo htmlspecialchars($addres) ?>">
             </div> 
+            <div class="text-danger mb-3"> <?php echo $errors["addres"]; ?></div>
             
+            <div class="row">
+                <div class="col col-6">
+                    <input  type="file" name="file" value="<?php echo $fileDestination; ?>"><br><br>
+                    <button  class=" btn btn-secondary" type="submit" name="upload">Upload </button>
+                </div>
+                <div class="col col-6">
+                    <input class="d-none" type="text" name="location" value="<?php echo $fileDestination; ?>">
+                    <img src="<?php echo $fileDestination; ?>" alt="" srcset="">
+                </div>
+            </div>
+            <div class="text-danger mb-3"> <?php echo $errors["images"]; ?></div>
 
             <div class="form-group row text-center">
                 <div class="col-sm-12">
@@ -168,6 +223,7 @@
 
         
         </form>
+
     </section>    
 
    

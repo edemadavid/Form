@@ -31,16 +31,29 @@
     <?php include('templates/header.php'); ?>
 
     <div class="container">
-        <h4 class="text-center">Details</h4>
+        <h4 class="text-center my-3">Details</h4>
 
         <?php if ($data): ?>
 
-            <h4> Name: <?php echo htmlspecialchars($data['firstname']) ?> <?php echo htmlspecialchars($data['lastname']) ?></h4>
-            <h5> Email: <?php echo htmlspecialchars($data['email']) ?> </h5>
-            <h5> Phone No: <?php echo htmlspecialchars($data['phoneno']) ?> </h5>
-            <h5> Dob: <?php echo htmlspecialchars($data['DoB']) ?> </h5>
-            <h5> Address: <?php echo htmlspecialchars($data['address']) ?> </h5>
+			<div class="row">
+				<div class="col col-3 mb-3">
+					<div>
+						<img src="<?php echo $data['profilepics'] ?>" alt="Profile Picture" style="width:150px;height:auto;">
+					</div>
+					<h5> Dob: <?php echo htmlspecialchars($data['DoB']) ?> </h5>
+				</div>
+				<div class="col col-9">
+					<h4> Name: <?php echo htmlspecialchars($data['firstname']) ?> <?php echo htmlspecialchars($data['lastname']) ?></h4>
+					<h5> Email: <?php echo htmlspecialchars($data['email']) ?> </h5>
+					<h5> Phone No: <?php echo htmlspecialchars($data['phoneno']) ?> </h5>
+					<h5> Dob: <?php echo htmlspecialchars($data['DoB']) ?> </h5>
+					<h5> Address: <?php echo htmlspecialchars($data['address']) ?> </h5>
+				</div>
 
+			</div>
+
+			
+			
         <?php else: ?>
 
         <?php endif; ?>

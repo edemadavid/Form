@@ -11,9 +11,20 @@
 
     mysqli_free_result($result);
 
-    mysqli_close($conn);
+    // mysqli_close($conn);
 
-    
+    if (isset ($_POST['delete'])){
+
+        $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
+
+        $sql = "DELETE FROM dataforms WHERE id = $id_to_delete";
+
+        if(mysqli_query($conn, $sql)){
+            header ('location: alldata.php');
+        } {
+            echo 'query error:'.mysqli_error($conn);
+        }
+    }
 
  
 ?>
@@ -48,14 +59,17 @@
                 <?php foreach ($dataforms as $data): ?>
                     <tbody>
                         <tr>
-                            <th scope="row"><?php echo htmlspecialchars($data['id']); ?></th>
+                            <th scope="row"><?php //echo htmlspecialchars($data['id']); ?></th>
                             <td><?php echo htmlspecialchars($data['firstname']); ?> </td>
                             <td><?php echo htmlspecialchars($data['lastname']); ?> </td>
                             <td><?php echo htmlspecialchars($data['email']); ?> </td>
-                            <td>
-                                <a href="datapage.php?id=<?php echo $data['id'] ?>"> <div class="btn btn-secondary">view</div> </a>
-                                <a href="#"><div class="btn btn-danger">Delete</div> </a>
-
+                            <td class="d-inline-flex">
+                                <a href="datapage.php?id=<?php echo $data['id'] ?>"> <div class="btn btn-secondary mr-2">view</div> </a>
+                                <form action="alldata.php" method="POST">
+                                    <input type="hidden" name="id_to_delete" value="<?php echo $data['id'] ?>">
+                                    <input type="submit" name="delete" value="Delete" class="btn btn-danger">
+                                </form>
+                                
                             </td>
                         </tr>
                     </tbody>
@@ -64,7 +78,7 @@
 
 
 
-            <?php $total = count($data);
+            <?php $total = count($dataforms);
                     echo 'there are ' .$total.' inputs in total';
             ?>
 

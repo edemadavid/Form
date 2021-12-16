@@ -22,9 +22,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="alldata.php">All Data</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="datapage.php">Data page</a>
-                    </li>
                     <form class="form-inline">
                         <a href="formpage.php" class="btn btn btn-outline-secondary bg-dark" type="button">Register</a>
                     </form>
