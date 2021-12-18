@@ -209,7 +209,7 @@
                 </div>
                 <div class="col col-6">
                     <input class="d-none" type="text" name="location" value="<?php echo $fileDestination; ?>">
-                    <img src="<?php echo $fileDestination; ?>" alt="" srcset="">
+                    <img src="<?php echo $fileDestination; ?>"alt="Profile Picture" style="width:150px;height:auto;">
                 </div>
             </div>
             <div class="text-danger mb-3"> <?php echo $errors["images"]; ?></div>

@@ -47,7 +47,7 @@
 					<h5> Email: <?php echo htmlspecialchars($data['email']) ?> </h5>
 					<h5> Phone No: <?php echo htmlspecialchars($data['phoneno']) ?> </h5>
 					<h5> Dob: <?php echo htmlspecialchars($data['DoB']) ?> </h5>
-					<h5> Address: <?php echo htmlspecialchars($data['address']) ?> </h5>
+					<h5> Address: <?php echo htmlspecialchars($data['addres']) ?> </h5>
 				</div>
 
 			</div>

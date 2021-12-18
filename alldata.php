@@ -13,6 +13,10 @@
 
     // mysqli_close($conn);
 
+
+    
+
+
     if (isset ($_POST['delete'])){
 
         $id_to_delete = mysqli_real_escape_string($conn, $_POST['id_to_delete']);
@@ -64,7 +68,11 @@
                             <td><?php echo htmlspecialchars($data['lastname']); ?> </td>
                             <td><?php echo htmlspecialchars($data['email']); ?> </td>
                             <td class="d-inline-flex">
-                                <a href="datapage.php?id=<?php echo $data['id'] ?>"> <div class="btn btn-secondary mr-2">view</div> </a>
+                                <a href="datapage.php?id=<?php echo $data['id'] ?>"> <div class="btn btn-info mr-2">view</div> </a>
+                                <a href="edit.php?id=<?php echo $data['id'] ?>"> <div class="btn btn-secondary mr-2">edit</div> </a>
+                                
+
+
                                 <form action="alldata.php" method="POST">
                                     <input type="hidden" name="id_to_delete" value="<?php echo $data['id'] ?>">
                                     <input type="submit" name="delete" value="Delete" class="btn btn-danger">
