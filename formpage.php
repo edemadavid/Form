@@ -116,7 +116,7 @@
             $profilepics = mysqli_real_escape_string($conn, $_POST['location']);
 
             //create sql
-            $sql = "INSERT INTO dataforms(firstname,lastname,phoneNo,DoB,email,address,profilepics) VALUES('$firstname', '$lastname', '$phoneNo','$DoB','$email', '$addres', '$profilepics' )";
+            $sql = "INSERT INTO dataforms(firstname,lastname,phoneNo,DoB,email,addres,profilepics) VALUES('$firstname', '$lastname', '$phoneNo','$DoB','$email', '$addres', '$profilepics' )";
 
             if(mysqli_query($conn, $sql)){
                 header("location: alldata.php");
