@@ -55,15 +55,9 @@
 			<div class="row">
 				<div class="col col-3 mb-3">
 					<div>
-						<?php if (empty ($data['profilepics'])){
-									echo " <a class='btn btn-info mt-5' href='edit.php?id=$data[id]'>upload profile pics</a>";
-								} else { echo "<img src='$data[profilepics]' alt='Profile Picture' style='width:150px;height:auto;'> <br> <br>"; 
-									echo "<form action='datapage.php?id=$id' method='POST'>
-									<button class='btn btn-danger ml-4 mt-3' type='submit' name='delete'>delete Pics</button>
-									</form>";
-									} 
 
-						?>
+						<img src='<?php echo $data['profilepics'] ;?>' alt='Profile Picture' style='width:150px;height:auto;'>
+
 					</div>
 					
 
@@ -97,3 +91,16 @@
 
 
 </html>
+
+
+
+
+<?php if (empty ($data['profilepics'])){
+									echo " <a class='btn btn-info mt-5' href='edit.php?id=$data[id]'>upload profile pics</a>";
+								} else { echo "<img src='$data[profilepics]' alt='Profile Picture' style='width:150px;height:auto;'> <br> <br>"; 
+									echo "<form action='datapage.php?id=$id' method='POST'>
+									<button class='btn btn-danger ml-4 mt-3' type='submit' name='delete'>delete Pics</button>
+									</form>";
+									} 
+
+						?>

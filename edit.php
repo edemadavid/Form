@@ -4,6 +4,7 @@
     include("config/db_connect.php");
 
     $firstname=$lastname=$phoneNo=$DoB=$email=$addres=$profilepics="";
+    $accepted="";
     $errors = array("firstname"=>"", "lastname" =>"", "phoneNo" =>"", "DoB"=>"", "email"=>"", "addres"=>"","images"=>"");
     
     //fetching of individual records
@@ -65,6 +66,7 @@
                         $fileNameNew = uniqid('',true).".".$fileActualExt;
                         $fileDestination = 'uploads/'.$fileNameNew;
                         move_uploaded_file($fileTmpName, $fileDestination);
+                        $accepted= 'Uploaded successfully';
                     }   else {$errors["images"]='your file is too big';}
                 }   else { $errors["images"]='There was an error uploading your file';}
             }   else{ $errors["images"]= 'File type not allowed!';}
@@ -147,7 +149,8 @@
                 $sql = "UPDATE dataforms SET firstname= '$firstname' , lastname= '$lastname', email= '$email', phoneno= '$phoneNo', addres= '$addres', profilepics= '$profilepics', DoB= '$DoB' WHERE dataforms.id = '$id'";
 
                 if(mysqli_query($conn, $sql)){
-                    header ('location: alldata.php');
+                    header ('location: edit.php?id='.$id);
+                   
                 }  else {
                     echo 'not sent <br>'; 
                     echo 'query error:<br>'.mysqli_error($conn);
@@ -157,6 +160,22 @@
 
             }
 
+            
+        }
+
+        if (isset ($_POST['delete'])){
+
+            $id = mysqli_real_escape_string($conn, $_GET['id']);
+    
+        
+            $sql = "UPDATE `dataforms` SET `profilepics` = '' WHERE `dataforms`.`id` = $id";
+    
+            if(mysqli_query($conn, $sql)){
+        
+                header ('location: edit.php?id='.$id);
+            } {
+                echo 'query error:'.mysqli_error($conn);
+            }
             
         }
 
@@ -232,16 +251,26 @@
             <div class="text-danger mb-3"> <?php echo $errors["addres"]; ?></div>
             
             <div class="row">
-                <div class="col col-6">
-                    <input  type="file" name="file" value="<?php echo $data['profilepics'] ?>"><br><br>
-                    <button  class=" btn btn-secondary" type="submit" name="upload">Upload </button>
-                </div>
-                <div class="col col-6">
-                    <input class="d-none" type="text" name="location" value="<?php echo $fileDestination ?>">
-                    <img src="<?php echo $fileDestination ?>" alt="Profile Picture" style="width:150px;height:auto;">
-                </div>
+                <?php if  (empty ($data['profilepics'])){ echo "
+                            <div class='col col-6'>
+                                <input class='d-none' type='text' name='location' value='$fileDestination'>
+                                <input  type='file' name='file' value='$data[profilepics]; ?>'><br><br>
+                                <button  class=' btn btn-secondary' type='submit' name='upload'>Upload </button>
+   
+                            </div> "; 
+                            echo  $accepted;
+
+                        } else { echo " <div class='col col-12 '>
+                             <img src='$data[profilepics]' alt='Profile Picture' style='width:150px;height:auto;'> <br> <br>"; 
+                            echo    "<div> <form action='edit.php?id=$id' method='POST'>
+                                        <button class='btn btn-danger ml-4 mt-3' type='submit' name='delete'>delete Pics</button>
+                                    </form>
+                                    <div>
+                            </div> ";
+                        }
+                ?>
             </div>
-            <div class="text-danger mb-3"> <?php echo $errors["images"]; ?></div>
+            <div class='text-danger mb-3'> <?php echo $errors['images'] ?> </div>
 
             <div class="form-group row text-center">
                 <div class="col-sm-12">
@@ -250,9 +279,7 @@
                     <input type="submit" name="edit" value="edit info" class="btn btn-danger">
                 </form>
 
-                <!--                 
-                
-                <button name="edit" type="submit" class="btn btn-outline-secondary mb-3">Edit Your Information</button> -->
+               
                 </div>
             </div>
 
@@ -271,3 +298,5 @@
 
     
 </html>
+
+
